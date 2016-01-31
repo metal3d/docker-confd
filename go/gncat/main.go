@@ -36,7 +36,11 @@ func main() {
 	}
 	c := http.Client{Transport: t}
 
-	req, _ := http.NewRequest(args[0], "http://d/"+args[1], nil)
+	// remove first slash
+	if args[1][0] == '/' {
+		args[1] = args[1][1:]
+	}
+	req, _ := http.NewRequest(args[0], "http://unix/"+args[1], nil)
 
 	resp, err := c.Do(req)
 	if err != nil {
@@ -46,5 +50,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(resp.StatusCode, resp)
 	fmt.Println(string(b))
 }
