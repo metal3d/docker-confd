@@ -1,6 +1,12 @@
-FROM busybox:latest
+FROM alpine:latest
 
-ADD https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 /usr/bin/confd
-RUN chmod +x /usr/bin/confd
-ADD gncat /bin/gncat
+ADD confd-0.11.0-linux-amd64 /usr/bin/confd
+ADD go /opt/go
+RUN set -xe;\
+    apk add --update go; \
+    cd /opt/go/gncat;    \
+    go build;            \
+    mv gncat /bin;       \
+    cd /;                \ 
+    rm -rf /opt/go 
 CMD confd
