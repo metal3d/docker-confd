@@ -8,5 +8,6 @@ RUN set -xe;\
     go build;            \
     mv gncat /bin;       \
     cd /;                \ 
-    rm -rf /opt/go 
+    rm -rf /opt/go;      \
+    chmod +x /usr/bin/confd
 CMD confd
