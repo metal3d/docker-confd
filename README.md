@@ -1,7 +1,8 @@
 # Simple dockerfile to start confd
 
 [Confd](https://github.com/kelseyhightower/confd) is a nice and powerfull service that reads [CoreOS etcd](https://github.com/coreos/etcd) and apply templates reading values.
-This Docker image is very tiny, using busybox that have "netcat" installed.
+
+This image provides a command tool to send request to unix socket in HTTP: `gncat`
 
 # Tips
 
@@ -14,7 +15,9 @@ docker run -it -v /var/run/docker.sock:/var/run/docker.sock metal3d/etcd -node h
 In you configuration, taking "balancer" as nginx container name:
 
 ```
-reload_cmd = "echo -e \"POST /containers/balancer/kill?signal=HUP HTTP/1.0\r\n\" | nc -U /var/run/docker.sock"
+reload_cmd = "gncat POST '/containers/balancer/kill?signal=HUP'"
 ```
+
+`gncat` is a tiny go program that connect to "docker.sock" and send command in HTTP form. If you mount volume or other socket file, you may use `"-u"` option to change the unix socket path to use.
 
 
